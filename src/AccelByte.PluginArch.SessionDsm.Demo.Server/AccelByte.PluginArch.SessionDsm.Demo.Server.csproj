@@ -12,6 +12,8 @@
 
 	<ItemGroup>
 		<PackageReference Include="AccelByte.Sdk" Version="0.65.0" />
+		<PackageReference Include="AWSSDK.GameLift" Version="3.7.401.4" />
+		<PackageReference Include="Google.Cloud.Compute.V1" Version="2.17.0" />
 		<PackageReference Include="Grpc.AspNetCore" Version="2.63.0" />
 		<PackageReference Include="Grpc.AspNetCore.HealthChecks" Version="2.63.0" />
 		<PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.63.0" />
@@ -33,6 +35,8 @@
 		<PackageReference Include="prometheus-net.SystemMetrics" Version="3.1.0" />
 		<PackageReference Include="Serilog.AspNetCore" Version="8.0.1" />
 		<PackageReference Include="System.Net.Http" Version="4.3.4" />
+		<PackageReference Include="System.Text.Json" Version="8.0.4" />
+		<PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
 	</ItemGroup>
 
 </Project>
