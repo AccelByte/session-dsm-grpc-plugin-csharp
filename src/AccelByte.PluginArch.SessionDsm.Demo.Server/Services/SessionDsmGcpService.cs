@@ -133,7 +133,6 @@ namespace AccelByte.PluginArch.SessionDsm.Demo.Server.Services
             else
                 throw new Exception($"Unknown AWS region: {selectedRegion}");
 
-
             string gcpZone;
             if (_GcpZones.ContainsKey(gcpRegion))
             {

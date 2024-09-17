@@ -92,9 +92,15 @@ namespace AccelByte.PluginArch.SessionDsm.Demo.Server
             if ((gcpMachineType != null) && (gcpMachineType.Trim() != ""))
                 GCP_MachineType = gcpMachineType.Trim();
 
+            if (GCP_MachineType == "")
+                GCP_MachineType = "e2-micro";
+
             string? gcpNetwork = Environment.GetEnvironmentVariable("GCP_NETWORK");
             if ((gcpNetwork != null) && (gcpNetwork.Trim() != ""))
                 GCP_NetworkName = gcpNetwork.Trim();
+
+            if (GCP_NetworkName == "")
+                GCP_NetworkName = "public";
 
             string? gcpRepo = Environment.GetEnvironmentVariable("GCP_REPOSITORY");
             if ((gcpRepo != null) && (gcpRepo.Trim() != ""))
