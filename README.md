@@ -6,18 +6,28 @@ flowchart LR
    CL[gRPC Client]
    end
    subgraph Extend Override App
-   SV["gRPC Server\n(you are here)"]
+   SV["gRPC Server"]
    end
    CL --- SV
 ```
 
-`AccelByte Gaming Services` (AGS) features can be customized using `Extend Override` apps. An `Extend Override` app is a gRPC server which contains one or more custom functions which can be called by AGS instead of its default functions.
+`AccelByte Gaming Services` (AGS) features can be customized using 
+`Extend Override` apps. An `Extend Override` app is basically a `gRPC server` which 
+contains one or more custom functions which can be called by AGS instead of the 
+default functions.
 
 ## Overview
 
-This repository provides a project template to create an `Extend Override` app for `session dsm grpc plugin server` written in `C#`. It includes an example of how the custom functions can be implemented. It also includes the essential gRPC server authentication and authorization to ensure security. Additionally, it comes with built-in instrumentation for observability, ensuring that metrics, traces, and logs are available upon deployment.
+This repository provides a project template to create an `Extend Override` 
+app for `session dsm grpc plugin server` written in `C#`. It includes an example of how the
+custom functions can be implemented. It also includes the essential 
+`gRPC server` authentication and authorization to ensure security. Additionally, 
+it comes with built-in instrumentation for observability, ensuring that metrics, 
+traces, and logs are available upon deployment.
 
-You can clone this repository to begin developing your own `Extend Override` app for `session dsm grpc plugin server`. Simply modify this project by implementing your own logic for the custom functions.
+You can clone this repository to begin developing your own `Extend Override` 
+app for `session dsm grpc plugin server`. Simply modify this project by implementing
+your own logic for the custom functions.
 
 ## Prerequisites
 
@@ -59,15 +69,21 @@ You can clone this repository to begin developing your own `Extend Override` app
       ...
       ```
 
-   d. Go v1.19
+   d. .NET 6 SDK
 
-      - Follow [Go installation](https://go.dev/doc/install) instruction to install Go
+      - On Linux Ubuntu:
 
-      ```
-      go version
+         To install from the Ubuntu repository, run `sudo apt-get update && sudo apt-get install -y dotnet-sdk-6.0`.
 
-      go version go1.19.0 linux/amd64
-      ```
+      - On Windows or macOS:
+
+         Follow Microsoft's documentation for installing .NET on [Windows](https://learn.microsoft.com/en-us/dotnet/core/install/windows) or on [macOS](https://learn.microsoft.com/en-us/dotnet/core/install/macos).
+
+         ```
+         dotnet --version
+         
+         6.0.128
+         ```
 
    e. Curl
 
@@ -109,7 +125,7 @@ You can clone this repository to begin developing your own `Extend Override` app
    
       - Sample URL for AGS Shared Cloud customers: https://spaceshooter.prod.gamingservices.accelbyte.io
       
-   b. [Create a Game Namespace](https://docs.accelbyte.io/gaming-services/tutorials/how-to/create-a-game-namespace/) if you don't have one yet. Keep the `Namespace ID`.
+   b. [Create a Game Namespace](https://docs.accelbyte.io/gaming-services/tutorials/how-to/namespaces/create-a-game-namespace/) if you don't have one yet. Keep the `Namespace ID`.
 
    c. [Create an OAuth Client](https://docs.accelbyte.io/gaming-services/services/access/authorization/manage-access-control-for-applications/#create-an-iam-client) with confidential client type. Keep the `Client ID` and `Client Secret`.
 
@@ -129,24 +145,50 @@ To be able to run this app, you will need to follow these setup steps.
 2. Fill in the required environment variables in `.env` file as shown below.
 
    ```
-   AB_BASE_URL=https://prod.gamingservices.accelbyte.io      # Base URL of AccelByte Gaming Services prod environment
+   AB_BASE_URL=https://prod.gamingservices.accelbyte.io        # Base URL of AccelByte Gaming Services prod environment
    AB_CLIENT_ID='xxxxxxxxxx'                                   # Client ID from the Prerequisites section
    AB_CLIENT_SECRET='xxxxxxxxxx'                               # Client Secret from the Prerequisites section
    PLUGIN_GRPC_SERVER_AUTH_ENABLED=false                       # Enable or disable access token and permission verification
+   DS_PROVIDER='DEMO'                                          # Select DS implementation, DEMO, GAMELIFT, or GCP
    
    // AWS Gamelift Config
-   AWS_ACCESS_KEY_ID='xxxxxxx'                                 # aws access key if using gamelift
-   AWS_SECRET_ACCESS_KEY='xxxxxx'                              # aws secret key if using gamelift
-   GAMELIFT_REGION='us-west-2'                                 # aws secret key if using gamelift region
-   
+   AWS_ACCESS_KEY_ID='xxxxxxx'                                 # AWS access key if using gamelift
+   AWS_SECRET_ACCESS_KEY='xxxxxx'                              # AWS secret key if using gamelift
+   AWS_REGION='us-west-2'                                      # AWS region for gamelift
+   GAMELIFT_REGION='us-west-2'                                 # alias of AWS_REGION
+      
    // GCP Config
+   GCP_SERVICE_ACCOUNT_FILE='./account.json'                   # GCP service account file in json format
 	GCP_PROJECT_ID=xxxxx-xxxx                                   # GCP Project ID
    GCP_NETWORK=public                                          # GCP Network type
    GCP_MACHINE_TYPE=e2-micro                                   # GCP intance type
    GCP_REPOSITORY=asia-southeast1-docker.pkg.dev/xxxx/gcpvm    # GCP Repository
    GCP_RETRY=3                                                 # GCP Retry to get instance
    GCP_WAIT_GET_IP=1                                           # GCP wait time to get the instance IP in seconds
+   GCP_IMAGE_OPEN_PORT=8080                                    # Dedicated server open port
    ```
+
+For more options, create `src/AccelByte.PluginArch.SessionDsm.Demo.Server/appsettings.Development.json` and fill in the required configuration.
+
+```json
+{
+  "EnableAuthorization": true,                  // Enable or disable access token and permission check (env var: PLUGIN_GRPC_SERVER_AUTH_ENABLED)
+  "RevocationListRefreshPeriod": 60,
+  "AccelByte": {
+    "BaseUrl": "https://test.accelbyte.io",     // Base URL (env var: AB_BASE_URL)
+    "ClientId": "xxxxxxxxxx",                   // Client ID (env var: AB_CLIENT_ID)    
+    "ClientSecret": "xxxxxxxxxx",               // Client Secret (env var: AB_CLIENT_SECRET)
+    "AppName": "LOOTBOXGRPCSERVICE",
+    "TraceIdVersion": "1",
+    "Namespace": "xxxxxxxxxx",                  // Namespace ID (env var: AB_NAMESPACE)
+    "EnableTraceId": true,
+    "EnableUserAgentInfo": true,
+    "ResourceName": "SESSIONDSMGRPCSERVICE"
+  }
+}
+```
+> :warning: **Environment variable values will override related configuration values in this file**.
+
 
 3. Access to AccelByte Gaming Services environment.
 a. Base URL: https://prod.gamingservices.accelbyte.io/admin
@@ -154,21 +196,19 @@ a. Base URL: https://prod.gamingservices.accelbyte.io/admin
 ## Building
 
 To build this app, use the following command.
-the image only can run 1 server gcpvm or gamelift
 
+```shell
+make build
 ```
-make proto //for generate session-dsm_grpc.pb.go
-docker build -f Dockerfilegamelift . // this is use for gamelift
-docker build -f Dockerfilegcpvm . // this is use for gcpvm
-```
+
+The build output will be available in `.output` directory.
 
 ## Running
 
 To (build and) run this app in a container, use the following command.
 
-```
-docker-compose -f docker-compose-gamelift.yaml up --build // this is for gamelift server
-docker-compose -f docker-compose-gcpvm.yaml up --build // this is for gcp server
+```shell
+docker compose up --build
 ```
 
 ## Testing
@@ -180,14 +220,14 @@ The custom functions in this app can be tested locally using [postman](https://w
 1. Run this app by using the command below.
 
    ```shell
-   docker-compose -f docker-compose-gamelift.yaml up --build // this is for gamelift server
-   docker-compose -f docker-compose-gcpvm.yaml up --build // this is for gcp server
+   docker compose up --build
    ```
 
-2. Open `postman`, create a new `gRPC request`, and enter `localhost:6565` as server URL (tutorial [here](https://blog.postman.com/postman-now-supports-grpc/)). 
+2. Open `postman`, create a new `gRPC request`, and enter `localhost:6565` as server URL.
 
 3. In `postman`, continue by selecting `CreateGameSession` grpc call method and click `Invoke` button, this will start stream connection to the gRPC server.
-4. In `postman`, continue sending parameters first to specify number of players in a match by copying sample `json` below and click `Send`.
+
+4. Still in `postman`, continue sending parameters first to specify number of players in a match by copying sample `json` below and click `Send`.
 
    ```json
    {
@@ -214,8 +254,7 @@ public IP, we can use something like [ngrok](https://ngrok.com/).
 1. Run this app by using command below.
 
    ```shell
-   docker-compose -f docker-compose-gamelift.yaml up --build // this is for gamelift server
-   docker-compose -f docker-compose-gcpvm.yaml up --build // this is for gcp server
+   docker compose up --build
    ```
 
 2. Sign-in/sign-up to [ngrok](https://ngrok.com/) and get your auth token in `ngrok` dashboard.
@@ -226,13 +265,13 @@ public IP, we can use something like [ngrok](https://ngrok.com/).
    make ngrok NGROK_AUTHTOKEN=xxxxxxxxxxx
    ```
 
-> :warning: **Ngrok free plan has some limitations**: You may want to use paid plan if the traffic is high.
-
-4. in admin portal go to -> Multiplayer > Matchmaking > Session Configuration. Click on the Add Session Template button. Select the Server configuration to be a DS - Custom. Then, select the Custom URL option and provide the ngrok forwarding URL from step 3.
+4. In admin portal go to -> Multiplayer > Matchmaking > Session Configuration. Click on the Add Session Template button. Select the Server configuration to be a DS - Custom. Then, select the Custom URL option and provide the ngrok forwarding URL from step 3.
 
 5. create gamesession or do matchmaking
 
 6. in Sessions and Parties - > check in session detail base on session id -> if ds status available check your server in GCPVM or gamelift
+
+> :warning: **Ngrok free plan has some limitations**: You may want to use paid plan if the traffic is high.
 
 ## Deploying
 
@@ -271,4 +310,4 @@ After done testing, you may want to deploy this app to `AccelByte Gaming Service
 
 ## Next Step
 
-Proceed to modify this project template and implement your own custom functions.
+Proceed to create your own `Extend Override` app for `session dsm grpc plugin server` by modifying this project. See [here](https://docs.accelbyte.io/gaming-services/services/extend/override-ags-feature/session-function/) for more details.
