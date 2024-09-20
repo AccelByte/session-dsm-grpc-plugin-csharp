@@ -1,5 +1,5 @@
 githubOwner = 'AccelByte'
-githubRepo = 'session-dsm-gprc-plugin-csharp'
+githubRepo = 'session-dsm-grpc-plugin-csharp'
 githubSsh = 'accelbyte-sdk-sdkbuild-ssh'
 
 githubUrl = "git@github.com:${githubOwner}/${githubRepo}.git"
