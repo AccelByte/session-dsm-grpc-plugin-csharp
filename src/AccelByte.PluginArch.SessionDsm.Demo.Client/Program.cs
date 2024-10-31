@@ -96,6 +96,8 @@ namespace AccelByte.PluginArch.SessionDsm.Demo.Client
                                     if (newSession == null)
                                         throw new Exception("New game session is null");
 
+                                    Thread.Sleep(config.DsWaitingInterval);
+
                                     //periodically checking session data
 
                                     bool isDsAvailable = false;
