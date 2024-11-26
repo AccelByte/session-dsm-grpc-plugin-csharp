@@ -67,8 +67,6 @@ namespace AccelByte.PluginArch.SessionDsm.Demo.Client.Model
             ClientId = ReplaceWithEnvironmentVariableIfExists(ClientId, "AB_CLIENT_ID");
             ClientSecret = ReplaceWithEnvironmentVariableIfExists(ClientSecret, "AB_CLIENT_SECRET");
             Namespace = ReplaceWithEnvironmentVariableIfExists(Namespace, "AB_NAMESPACE");
-            GrpcServerUrl = ReplaceWithEnvironmentVariableIfExists(GrpcServerUrl, "GRPC_SERVER_URL");
-            ExtendAppName = ReplaceWithEnvironmentVariableIfExists(ExtendAppName, "EXTEND_APP_NAME");
 
             string? dsWaitingIntervalVar = Environment.GetEnvironmentVariable("DS_WAITING_INTERVAL");
             if (dsWaitingIntervalVar != null)
