@@ -64,7 +64,8 @@ namespace AccelByte.Sdk.Tests.Mod.Scenario
                 DisplayName = $"Server SDK Test Player {GenerateRandomNumber(3)}",
                 Username = _UserName,
                 Country = "ID",
-                DateOfBirth = "1995-01-10"
+                DateOfBirth = "1995-01-10",
+                UniqueDisplayName = _UserName
             };
 
             AccountCreateUserResponseV4? cuResp = _AdminSdk.Iam.UsersV4.PublicCreateUserV4Op
@@ -80,7 +81,7 @@ namespace AccelByte.Sdk.Tests.Mod.Scenario
                 .EnableLog()
                 .Build();
 
-            _Sdk.LoginUser(_UserName, user_password);
+            _Sdk.LoginUser(user_email, user_password);
         }
 
         public void Login() { }
