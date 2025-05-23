@@ -1,4 +1,4 @@
-// Copyright (c) 2024 AccelByte Inc. All Rights Reserved.
+// Copyright (c) 2024-2025 AccelByte Inc. All Rights Reserved.
 // This is licensed software from AccelByte Inc, for limitations
 // and restrictions contact your company contract manager.
 
@@ -28,9 +28,16 @@ namespace AccelByte.PluginArch.SessionDsm.Demo.Server
         public static int Main(string[] args)
         {
             OpenTelemetry.Sdk.SetDefaultTextMapPropagator(new B3Propagator());
+
+            string? appServiceName = Environment.GetEnvironmentVariable("OTEL_SERVICE_NAME");
+            if (appServiceName == null)
+                appServiceName = "extend-app-session-dsm";
+            else
+                appServiceName = $"extend-app-{appServiceName.Trim().ToLower()}";
+
             Metrics.DefaultRegistry.SetStaticLabels(new Dictionary<string, string>()
             {
-                { "application", "session_dsm_grpcserver" }
+                { "application", appServiceName }
             });
 
             var builder = WebApplication.CreateBuilder(args);
@@ -42,7 +49,7 @@ namespace AccelByte.PluginArch.SessionDsm.Demo.Server
 
             string? appResourceName = Environment.GetEnvironmentVariable("APP_RESOURCE_NAME");
             if (appResourceName == null)
-                appResourceName = "SESSIONDSMGRPCSERVICE";
+                appResourceName = "SESSIONDSMEXTENDAPP";
 
             string? dsProviderType = Environment.GetEnvironmentVariable("DS_PROVIDER");
             if (dsProviderType == null)
@@ -68,7 +75,7 @@ namespace AccelByte.PluginArch.SessionDsm.Demo.Server
                     traceConfig
                         .AddSource(appResourceName)
                         .SetResourceBuilder(ResourceBuilder.CreateDefault()
-                            .AddService(appResourceName, null, version)
+                            .AddService(appServiceName, null, version)
                             .AddTelemetrySdk())
                         .AddZipkinExporter()
                         .AddHttpClientInstrumentation()
