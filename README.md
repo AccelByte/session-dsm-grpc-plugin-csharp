@@ -85,37 +85,15 @@ your own logic for the custom functions.
          6.0.128
          ```
 
-   e. Curl
-
-      - To install from Ubuntu repository, run: `sudo apt update && sudo apt install curl`
-
-      ```
-      curl --version
-
-      curl 7.81.0 (x86_64-pc-linux-gnu)
-      ...
-      ```
-
-   f. Jq
-
-      - To install from Ubuntu repository, run: `sudo apt update && sudo apt install jq`
-
-      ```
-      jq --version
-
-      jq-1.6
-      ...
-      ```
-
-   g. [Postman](https://www.postman.com/)
+   e. [Postman](https://www.postman.com/)
 
       - Use binary available [here](https://www.postman.com/downloads/)
 
-   h. [extend-helper-cli](https://github.com/AccelByte/extend-helper-cli)
+   f. [extend-helper-cli](https://github.com/AccelByte/extend-helper-cli)
 
       - Use the available binary from [extend-helper-cli](https://github.com/AccelByte/extend-helper-cli/releases).
 
-   i. Local tunnel service that has TCP forwarding capability, such as:
+   g. Local tunnel service that has TCP forwarding capability, such as:
 
       - [Ngrok](https://ngrok.com/)
          
