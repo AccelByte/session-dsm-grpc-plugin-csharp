@@ -11,7 +11,7 @@
   </ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="AccelByte.Sdk" Version="0.65.0" />
+		<PackageReference Include="AccelByte.Sdk" Version="0.77.0" />
 		<PackageReference Include="AWSSDK.GameLift" Version="3.7.401.4" />
 		<PackageReference Include="Google.Cloud.Compute.V1" Version="2.17.0" />
 		<PackageReference Include="Grpc.AspNetCore" Version="2.63.0" />
