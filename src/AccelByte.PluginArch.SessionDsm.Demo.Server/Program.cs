@@ -33,7 +33,7 @@ namespace AccelByte.PluginArch.SessionDsm.Demo.Server
             if (appServiceName == null)
                 appServiceName = "extend-app-session-dsm";
             else
-                appServiceName = $"extend-app-{appServiceName.Trim().ToLower()}";
+                appServiceName = $"extend-app-sd-{appServiceName.Trim().ToLower()}";
 
             Metrics.DefaultRegistry.SetStaticLabels(new Dictionary<string, string>()
             {

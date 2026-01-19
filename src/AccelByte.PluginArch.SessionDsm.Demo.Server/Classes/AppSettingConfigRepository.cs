@@ -81,7 +81,7 @@ namespace AccelByte.PluginArch.SessionDsm.Demo.Server
             if (appServiceName == null)
                 ServiceName = "extend-app-session-dsm";
             else
-                ServiceName = $"extend-app-{appServiceName.Trim().ToLower()}";
+                ServiceName = $"extend-app-sd-{appServiceName.Trim().ToLower()}";
 
             string? appResourceName = Environment.GetEnvironmentVariable("APP_RESOURCE_NAME");
             if (appResourceName == null)
